@@ -17,7 +17,7 @@ interface Props {
   title: string;
   description: string;
   rating: number;
-  category: string;
+  category: string[];
   link: string;
 }
 
@@ -28,32 +28,32 @@ const RestaurantCard = ({
   rating,
   category,
   link,
-}: Props) => {
-  return (
-    <Card>
-      <ImageContainer>
-        <Image src={image} alt={title} />
-        <TagList>
-          <Tag variant="text">{category}</Tag>
-          <Tag variant="text">{category}</Tag>
-        </TagList>
-      </ImageContainer>
-      <Info>
-        <TopRow>
-          <Title>{title}</Title>
-          <Rating>
-            {rating.toFixed(1)} <img src={star} alt="Estrela" />{" "}
-          </Rating>
-        </TopRow>
+}: Props) => (
+  <Card>
+    <ImageContainer>
+      <Image src={image} alt={title} />
+      <TagList>
+        {category.map((item) => (
+          <Tag key={item} variant="text">
+            {item}
+          </Tag>
+        ))}
+      </TagList>
+    </ImageContainer>
+    <Info>
+      <TopRow>
+        <Title>{title}</Title>
+        <Rating>
+          {rating.toFixed(1)} <img src={star} alt="Estrela" />{" "}
+        </Rating>
+      </TopRow>
 
-        <Description>{description}</Description>
+      <Description>{description}</Description>
 
-        <Tag variant="link" href={link}>
-          Saiba mais
-        </Tag>
-      </Info>
-    </Card>
-  );
-};
-
+      <Tag variant="link" href={link}>
+        Saiba mais
+      </Tag>
+    </Info>
+  </Card>
+);
 export default RestaurantCard;
