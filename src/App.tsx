@@ -1,9 +1,8 @@
 import Header from "./components/Header";
 import { GlobalStyle } from "./styles";
-import RestaurantCard from "./components/RestaurantCard";
 
-import sushiRestaurantImage from "../src/assets/images/sushi.png";
 import Restaurants from "./pages/Restaurants";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -11,6 +10,7 @@ function App() {
       <GlobalStyle />
       <Header />
       <Restaurants />
+      <Footer />
     </>
   );
 }
