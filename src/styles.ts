@@ -1,4 +1,4 @@
-import { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 export const colors = {
   softPink: '#FFEBD9',
@@ -20,3 +20,7 @@ body{
   color: ${colors.accentPink};
 }
 `
+export const Container = styled.div`
+  max-width: 1024px;
+  margin: 0 auto;
+  `
