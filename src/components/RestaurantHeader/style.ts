@@ -37,5 +37,4 @@ export const TextBanner = styled.p`
 export const RestaurantName = styled.p`
   font-size: 32px;
   font-weight: 900;
-  width: 672px;
 `;

@@ -5,6 +5,7 @@ export const FooterStyle = styled.footer`
 background-color: ${colors.softPink};
 height: 300px;
 text-align: center;
+margin-top: 120px;
 padding: 40px 0 0 0;
 `
 
