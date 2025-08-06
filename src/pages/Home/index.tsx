@@ -1,76 +1,49 @@
+import { useEffect, useState } from "react";
+
 import RestaurantCard from "../../components/RestaurantCard";
 import { Grid } from "./style";
 import { Container } from "../../styles";
-
-import sushiRestaurantImage from "../../assets/images/sushi.png";
-import italianRestaurantImage from "../../assets/images/pasta.png";
 import Header from "../../components/Header";
 
+type RestaurantData = {
+  id: number;
+  titulo: string;
+  descricao: string;
+  tipo: string;
+  capa: string;
+  destacado: boolean;
+  avaliacao: number;
+};
+
 const Home = () => {
-  const restaurants = [
-    {
-      image: sushiRestaurantImage,
-      title: "Hioki Sushi",
-      description:
-        "Peça já o melhor da culinária japonesa no conforto da sua casa! Sushis frescos, sashimis deliciosos e pratos quentes irresistíveis. Entrega rápida, embalagens cuidadosas e qualidade garantida.Experimente o Japão sem sair do lar com nosso delivery!",
-      rating: 4.9,
-      category: ["Destaque da semana", "Japonesa"],
-      link: "",
-    },
-    {
-      image: italianRestaurantImage,
-      title: "La Dolce Vita Trattoria",
-      description:
-        "A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você! Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor inesquecível. Peça já!",
-      rating: 4.6,
-      category: ["Italiana"],
-      link: "/restaurante/la-dolce-vita",
-    },
-    {
-      image: italianRestaurantImage,
-      title: "La Dolce Vita Trattoria",
-      description:
-        "A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você! Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor inesquecível. Peça já!",
-      rating: 4.6,
-      category: ["Italiana"],
-      link: "/restaurante/la-dolce-vita",
-    },
-    {
-      image: italianRestaurantImage,
-      title: "La Dolce Vita Trattoria",
-      description:
-        "A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você! Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor inesquecível. Peça já!",
-      rating: 4.6,
-      category: ["Italiana"],
-      link: "/restaurante/la-dolce-vita",
-    },
-    {
-      image: italianRestaurantImage,
-      title: "La Dolce Vita Trattoria",
-      description:
-        "A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você! Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor inesquecível. Peça já!",
-      rating: 4.6,
-      category: ["Italiana"],
-      link: "/restaurante/la-dolce-vita",
-    },
-    {
-      image: italianRestaurantImage,
-      title: "La Dolce Vita Trattoria",
-      description:
-        "A La Dolce Vita Trattoria leva a autêntica cozinha italiana até você! Desfrute de massas caseiras, pizzas deliciosas e risotos incríveis, tudo no conforto do seu lar. Entrega rápida, pratos bem embalados e sabor inesquecível. Peça já!",
-      rating: 4.6,
-      category: ["Italiana"],
-      link: "/restaurante/la-dolce-vita",
-    },
-  ];
+  const [restaurants, setRestaurants] = useState<RestaurantData[]>([]);
+
+  useEffect(() => {
+    fetch("https://ebac-fake-api.vercel.app/api/efood/restaurantes")
+      .then((res) => res.json())
+      .then((data) => setRestaurants(data));
+  }, []);
+
+  console.log(restaurants);
 
   return (
     <>
       <Header />
       <Container>
         <Grid>
-          {restaurants.map((rest, index) => (
-            <RestaurantCard key={index} {...rest} />
+          {restaurants.map((rest) => (
+            <RestaurantCard
+              key={rest.id}
+              title={rest.titulo}
+              description={rest.descricao}
+              image={rest.capa}
+              rating={rest.avaliacao}
+              category={[
+                ...(rest.destacado ? ["Destaque da semana"] : []),
+                rest.tipo,
+              ]}
+              link={`/restaurant/${rest.id}`}
+            />
           ))}
         </Grid>
       </Container>

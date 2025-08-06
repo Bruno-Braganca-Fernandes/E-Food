@@ -8,9 +8,9 @@ type Props = {
 const DishCard = ({ dish }: Props) => {
   return (
     <Card>
-      <Image src={dish.image} alt={dish.name} />
-      <Name>{dish.name}</Name>
-      <Description>{dish.description}</Description>
+      <Image src={dish.foto} alt={dish.nome} />
+      <Name>{dish.nome}</Name>
+      <Description>{dish.descricao}</Description>
       <Button>Adicionar ao carrinho</Button>
     </Card>
   );

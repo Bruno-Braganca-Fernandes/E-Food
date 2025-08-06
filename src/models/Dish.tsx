@@ -1,14 +1,25 @@
 class Dish {
   id: number;
-  image: string;
-  name: string;
-  description: string;
+  nome: string;
+  descricao: string;
+  preco: number;
+  foto: string;
+  porcao: string;
 
-  constructor(id: number, name: string, description: string, image: string) {
+  constructor(
+    id: number,
+    nome: string,
+    descricao: string,
+    preco: number,
+    foto: string,
+    porcao: string
+  ) {
     this.id = id;
-    this.image = image;
-    this.name = name;
-    this.description = description;
+    this.nome = nome;
+    this.descricao = descricao;
+    this.preco = preco;
+    this.foto = foto;
+    this.porcao = porcao;
   }
 }
 
