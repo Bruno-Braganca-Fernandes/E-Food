@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import RestaurantHeader from "../../components/RestaurantHeader";
 import Dish from "../../models/Dish";
+import RestaurantModel from "../../models/Restaurant";
 import DishCard from "../../components/DishCard";
 import { Grid } from "./style";
 import { Container } from "../../styles";
@@ -10,6 +11,7 @@ import { Container } from "../../styles";
 const Restaurant = () => {
   const { id } = useParams();
   const [dishes, setDishes] = useState<Dish[]>([]);
+  const [restaurant, setRestaurant] = useState<RestaurantModel | null>(null);
 
   useEffect(() => {
     fetch(`https://ebac-fake-api.vercel.app/api/efood/restaurantes/${id}`)
@@ -21,18 +23,30 @@ const Restaurant = () => {
               item.id,
               item.nome,
               item.descricao,
-              item.foto,
               item.preco,
+              item.foto,
               item.porcao
             )
         );
         setDishes(parsedDishes);
+
+        const parsedRestaurant = new RestaurantModel(
+          data.id,
+          data.titulo,
+          data.descricao,
+          data.tipo,
+          data.capa,
+          data.destacado,
+          data.avaliacao,
+          parsedDishes
+        );
+        setRestaurant(parsedRestaurant);
       });
   }, [id]);
 
   return (
     <>
-      <RestaurantHeader />
+      {restaurant && <RestaurantHeader restaurant={restaurant} />}
       <Container>
         <Grid>
           {dishes.map((dish) => (

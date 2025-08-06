@@ -4,25 +4,33 @@ import {
   BackgroundText,
   Banner,
   RestaurantName,
+  StyledLink,
   TextBanner,
 } from "./style";
 
 import logo from "../../assets/images/logo.png";
 import { Container } from "../../styles";
+import Restaurant from "../../models/Restaurant";
 
-const RestaurantHeader = () => (
+type Props = {
+  restaurant: Restaurant;
+};
+
+const RestaurantHeader = ({ restaurant }: Props) => (
   <>
     <Background>
-      <BackgroundText>Restaurantes</BackgroundText>
+      <StyledLink to="/">
+        <BackgroundText>Restaurantes</BackgroundText>
+      </StyledLink>
       <Link to="/">
         <img src={logo} alt="Efood" />
       </Link>
       <BackgroundText>0 produto(s) no carrinho</BackgroundText>
     </Background>
-    <Banner>
+    <Banner style={{ backgroundImage: `url(${restaurant.capa})` }}>
       <Container>
-        <TextBanner>Italiana</TextBanner>
-        <RestaurantName>La Dolce Vita Trattoria</RestaurantName>
+        <TextBanner>{restaurant.tipo}</TextBanner>
+        <RestaurantName>{restaurant.titulo}</RestaurantName>
       </Container>
     </Banner>
   </>

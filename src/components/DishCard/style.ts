@@ -5,10 +5,16 @@ export const Card = styled.div`
   background-color: ${colors.accentPink};
   padding: 8px;
   width: 320px;
+   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 `
 
 export const Image = styled.img`
   width: 100%;
+   height: 200px;
+  object-fit: cover;
   border-radius: 4px;
 `
 
@@ -35,4 +41,9 @@ export const Button = styled.button`
   padding: 4px;
   width: 100%;
   cursor: pointer;
+   transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #f8dede;
+  }
 `
