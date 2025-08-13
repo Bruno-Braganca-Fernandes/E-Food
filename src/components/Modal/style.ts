@@ -32,6 +32,7 @@ export const CloseButton = styled.button`
 
 export const DishImage = styled.img`
   max-width: 280px;
+  height: 280px;
 `
 
 export const DishInfo = styled.div`
