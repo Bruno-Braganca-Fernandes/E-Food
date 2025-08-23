@@ -23,14 +23,7 @@ const DishCard = ({ dish }: Props) => {
       </Card>
 
       {isModalOpen && (
-        <Modal
-          image={dish.foto}
-          title={dish.nome}
-          description={dish.descricao}
-          portion={dish.porcao}
-          price={dish.preco}
-          onClose={() => setIsModalOpen(false)}
-        />
+        <Modal dish={dish} onClose={() => setIsModalOpen(false)} />
       )}
     </>
   );

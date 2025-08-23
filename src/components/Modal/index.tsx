@@ -1,3 +1,5 @@
+import { useDispatch } from "react-redux";
+
 import {
   AddButton,
   CloseButton,
@@ -11,37 +13,35 @@ import {
 } from "./style";
 
 import close from "../../assets/images/close.png";
+import { add } from "../../store/reducers/cart";
+import Dish from "../../models/Dish";
 
 type Props = {
-  image: string;
-  title: string;
-  description: string;
-  portion: string;
-  price: number;
+  dish: Dish;
   onClose: () => void;
 };
 
-export const Modal = ({
-  image,
-  title,
-  description,
-  portion,
-  price,
-  onClose,
-}: Props) => {
+export const Modal = ({ dish, onClose }: Props) => {
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    dispatch(add(dish));
+    onClose();
+  };
+
   return (
     <Overlay onClick={onClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>
           <img src={close} alt="Fechar modal" />
         </CloseButton>
-        <DishImage src={image} alt={title} />
+        <DishImage src={dish.foto} alt={dish.nome} />
         <DishInfo>
-          <DishTitle>{title}</DishTitle>
-          <DishDescription>{description}</DishDescription>
-          <DishPortion>Serve: de {portion}</DishPortion>
-          <AddButton>
-            Adicionar ao carrinho - R${price.toFixed(2).replace(".", ",")}
+          <DishTitle>{dish.nome}</DishTitle>
+          <DishDescription>{dish.descricao}</DishDescription>
+          <DishPortion>Serve: de {dish.porcao}</DishPortion>
+          <AddButton onClick={handleAddToCart}>
+            Adicionar ao carrinho - R${dish.preco.toFixed(2).replace(".", ",")}
           </AddButton>
         </DishInfo>
       </ModalContainer>
