@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { closeCart } from "../../store/reducers/cart";
+import { closeCart, remove } from "../../store/reducers/cart";
 import {
   CartContainer,
   Overlay,
@@ -13,7 +13,12 @@ import {
   DishPrice,
   TotalValue,
   ContinueButton,
+  Bin,
+  CartFooter,
 } from "./style";
+
+import bin from "../../assets/images/bin.png";
+import { TextBanner } from "../RestaurantHeader/style";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -30,26 +35,35 @@ const Cart = () => {
         <CartContent>
           <CartItems>
             {items.length === 0 ? (
-              <p>Seu carrinho está vazio</p>
+              <TextBanner>Seu carrinho está vazio</TextBanner>
             ) : (
-              items.map((item, index) => (
-                <DishItem key={index}>
+              items.map((item) => (
+                <DishItem key={item.id}>
                   <DishImage src={item.foto} alt={item.nome} />
                   <DishDetails>
                     <DishName>{item.nome}</DishName>
                     <DishPrice>R$ {item.preco}</DishPrice>
                   </DishDetails>
+                  <Bin
+                    src={bin}
+                    onClick={() => dispatch(remove(item.id))}
+                    alt="bin"
+                  />
                 </DishItem>
               ))
             )}
           </CartItems>
-          {items.length > 0 && (
-            <TotalValue>
-              <span>Valor total</span>
-              <span>R$ {valorTotal}</span>
-            </TotalValue>
-          )}
-          <ContinueButton>Continuar com a entrega</ContinueButton>
+          <CartFooter>
+            {items.length > 0 && (
+              <>
+                <TotalValue>
+                  <span>Valor total</span>
+                  <span>R$ {valorTotal}</span>
+                </TotalValue>
+                <ContinueButton>Continuar com a entrega</ContinueButton>
+              </>
+            )}
+          </CartFooter>
         </CartContent>
       </CartContainer>
     </>

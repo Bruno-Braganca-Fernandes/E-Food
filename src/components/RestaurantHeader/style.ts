@@ -8,7 +8,6 @@ export const Background = styled.div`
     background-image: url(${backgrounHeader});
   width: 100%;
   height: 184px;
-  /* padding-left: 60px; */
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -27,6 +26,7 @@ export const StyledLink = styled(Link)`
 export const BackgroundText = styled.h3`
   font-size: 18px;
   font-weight: 900;
+  cursor: pointer;
 `;
 
 export const Banner = styled.div`
@@ -51,6 +51,7 @@ export const Banner = styled.div`
 
 export const TextBanner = styled.p`
   padding-top: 25px;
+    color: ${colors.white};
   font-size: 32px;
   font-weight: 100;
   padding-bottom: 152px;

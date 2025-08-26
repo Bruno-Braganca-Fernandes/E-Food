@@ -41,6 +41,7 @@ export const CartItems = styled.div`
 
 export const DishItem = styled.div`
   display: flex;
+  justify-content: space-between;
   background-color: ${colors.softPink};
   padding: 8px;
 `;
@@ -67,24 +68,28 @@ export const DishPrice = styled.p`
   color: ${colors.accentPink}; 
 `;
 
+export const Bin = styled.img`
+width: 16px;
+object-fit: contain;
+margin-top: 60px;
+cursor: pointer;
+`
+
+export const CartFooter = styled.div`
+  padding: 40px 0;
+`
+
 export const TotalValue = styled.div`
-  display: flex;
+   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-top: 40px;
-  padding: 16px 8px;
-  color: ${colors.white};
-  font-weight: 700;
+  margin-bottom: 16px;
+  font-weight: bold;
   font-size: 14px;
-  position: fixed;
-  bottom: 80px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
+  color: ${colors.white};
 `;
 
 export const ContinueButton = styled.button`
-  width: 95%;
+  width: 100%;
   padding: 4px;
   background-color: ${colors.softPink};
   color: ${colors.accentPink};
@@ -92,12 +97,6 @@ export const ContinueButton = styled.button`
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  text-align: center;
-  position: fixed;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
   &:hover {
     background-color: #f8dede;
   }
