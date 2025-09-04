@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { closeCart, remove } from "../../store/reducers/cart";
+import { remove, toggleCart } from "../../store/reducers/cart";
 import {
   CartContainer,
   Overlay,
@@ -30,7 +30,7 @@ const Cart = () => {
 
   return (
     <>
-      {isOpen && <Overlay onClick={() => dispatch(closeCart())} />}
+      {isOpen && <Overlay onClick={() => dispatch(toggleCart())} />}
       <CartContainer isOpen={isOpen}>
         <CartContent>
           <CartItems>
@@ -38,7 +38,7 @@ const Cart = () => {
               <TextBanner>Seu carrinho está vazio</TextBanner>
             ) : (
               items.map((item) => (
-                <DishItem key={item.id}>
+                <DishItem key={item.cartId}>
                   <DishImage src={item.foto} alt={item.nome} />
                   <DishDetails>
                     <DishName>{item.nome}</DishName>
@@ -46,7 +46,7 @@ const Cart = () => {
                   </DishDetails>
                   <Bin
                     src={bin}
-                    onClick={() => dispatch(remove(item.id))}
+                    onClick={() => dispatch(remove(item.cartId))}
                     alt="bin"
                   />
                 </DishItem>
