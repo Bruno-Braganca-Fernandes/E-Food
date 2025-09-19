@@ -18,7 +18,7 @@ const Restaurant = () => {
       .then((res) => res.json())
       .then((data) => {
         const parsedDishes = data.cardapio.map(
-          (item: any) =>
+          (item: Dish) =>
             new Dish(
               item.id,
               item.nome,
