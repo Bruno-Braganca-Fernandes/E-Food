@@ -1,5 +1,3 @@
-import Dish from "./Dish";
-
 class Restaurant {
   id: number;
   titulo: string;

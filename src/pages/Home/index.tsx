@@ -4,27 +4,16 @@ import RestaurantCard from "../../components/RestaurantCard";
 import { Grid } from "./style";
 import { Container } from "../../styles";
 import Header from "../../components/Header";
-
-type RestaurantData = {
-  id: number;
-  titulo: string;
-  descricao: string;
-  tipo: string;
-  capa: string;
-  destacado: boolean;
-  avaliacao: number;
-};
+import Restaurant from "../../models/Restaurant";
 
 const Home = () => {
-  const [restaurants, setRestaurants] = useState<RestaurantData[]>([]);
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
 
   useEffect(() => {
     fetch("https://ebac-fake-api.vercel.app/api/efood/restaurantes")
       .then((res) => res.json())
       .then((data) => setRestaurants(data));
   }, []);
-
-  console.log(restaurants);
 
   return (
     <>

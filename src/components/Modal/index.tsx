@@ -14,7 +14,6 @@ import {
 
 import close from "../../assets/images/close.png";
 import { add } from "../../store/reducers/cart";
-import Dish from "../../models/Dish";
 
 type Props = {
   dish: Dish;

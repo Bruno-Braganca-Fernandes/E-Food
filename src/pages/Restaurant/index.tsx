@@ -2,60 +2,39 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import RestaurantHeader from "../../components/RestaurantHeader";
-import Dish from "../../models/Dish";
-import RestaurantModel from "../../models/Restaurant";
+import { Dish, Restaurant } from "../../types";
 import DishCard from "../../components/DishCard";
 import { Grid } from "./style";
 import { Container } from "../../styles";
 
-const Restaurant = () => {
-  const { id } = useParams();
-  const [dishes, setDishes] = useState<Dish[]>([]);
-  const [restaurant, setRestaurant] = useState<RestaurantModel | null>(null);
+const RestaurantPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
 
   useEffect(() => {
+    if (!id) return;
+
     fetch(`https://ebac-fake-api.vercel.app/api/efood/restaurantes/${id}`)
       .then((res) => res.json())
-      .then((data) => {
-        const parsedDishes = data.cardapio.map(
-          (item: Dish) =>
-            new Dish(
-              item.id,
-              item.nome,
-              item.descricao,
-              item.preco,
-              item.foto,
-              item.porcao
-            )
-        );
-        setDishes(parsedDishes);
-
-        const parsedRestaurant = new RestaurantModel(
-          data.id,
-          data.titulo,
-          data.descricao,
-          data.tipo,
-          data.capa,
-          data.destacado,
-          data.avaliacao,
-          parsedDishes
-        );
-        setRestaurant(parsedRestaurant);
-      });
+      .then((data: Restaurant) => setRestaurant(data));
   }, [id]);
 
   return (
     <>
-      {restaurant && <RestaurantHeader restaurant={restaurant} />}
-      <Container>
-        <Grid>
-          {dishes.map((dish) => (
-            <DishCard key={dish.id} dish={dish} />
-          ))}
-        </Grid>
-      </Container>
+      {restaurant && (
+        <>
+          <RestaurantHeader restaurant={restaurant} />
+          <Container>
+            <Grid>
+              {restaurant.cardapio.map((dish: Dish) => (
+                <DishCard key={dish.id} dish={dish} />
+              ))}
+            </Grid>
+          </Container>
+        </>
+      )}
     </>
   );
 };
 
-export default Restaurant;
+export default RestaurantPage;

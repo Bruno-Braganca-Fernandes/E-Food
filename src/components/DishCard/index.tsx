@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button, Card, Description, Image, Name } from "./style";
 
-import Dish from "../../models/Dish";
 import { Modal } from "../Modal";
 
 type Props = {
