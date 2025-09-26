@@ -4,7 +4,7 @@ import RestaurantCard from "../../components/RestaurantCard";
 import { Grid } from "./style";
 import { Container } from "../../styles";
 import Header from "../../components/Header";
-import Restaurant from "../../models/Restaurant";
+import { Restaurant } from "../../types";
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);

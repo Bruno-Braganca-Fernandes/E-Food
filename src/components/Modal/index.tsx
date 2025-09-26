@@ -13,18 +13,19 @@ import {
 } from "./style";
 
 import close from "../../assets/images/close.png";
-import { add } from "../../store/reducers/cart";
+import { addItem } from "../../store/reducers/cart";
+import { Dish } from "../../types";
 
 type Props = {
   dish: Dish;
   onClose: () => void;
 };
 
-export const Modal = ({ dish, onClose }: Props) => {
+const Modal = ({ dish, onClose }: Props) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
-    dispatch(add(dish));
+    dispatch(addItem(dish));
     onClose();
   };
 
@@ -47,3 +48,5 @@ export const Modal = ({ dish, onClose }: Props) => {
     </Overlay>
   );
 };
+
+export default Modal;

@@ -10,10 +10,10 @@ import {
 
 import logo from "../../assets/images/logo.png";
 import { Container } from "../../styles";
-import Restaurant from "../../models/Restaurant";
 import { toggleCart } from "../../store/reducers/cart";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { Restaurant } from "../../types";
 
 type Props = {
   restaurant: Restaurant;

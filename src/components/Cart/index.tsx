@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { remove, toggleCart } from "../../store/reducers/cart";
+import { removeItem, toggleCart } from "../../store/reducers/cart";
 import {
   CartContainer,
   Overlay,
@@ -46,7 +46,7 @@ const Cart = () => {
                   </DishDetails>
                   <Bin
                     src={bin}
-                    onClick={() => dispatch(remove(item.cartId))}
+                    onClick={() => dispatch(removeItem(item.cartId))}
                     alt="bin"
                   />
                 </DishItem>
