@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { colors } from "../../styles";
 
-export const Overlay = styled.div`
+export const Overlay = styled.div<{ isOpen?: boolean }>`
   position: fixed;
   top: 0;
   left: 0;

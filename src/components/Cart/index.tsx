@@ -20,13 +20,21 @@ import {
 import bin from "../../assets/images/bin.png";
 import { TextBanner } from "../RestaurantHeader/style";
 
-const Cart = () => {
+type Props = {
+  stageCheckout: () => void;
+};
+
+const Cart = ({ stageCheckout }: Props) => {
   const dispatch = useDispatch();
   const { isOpen, items } = useSelector((state: RootState) => state.cart);
 
   const valorTotal = items
     .reduce((acc, item) => acc + item.preco, 0)
     .toFixed(2);
+
+  const goToCheckout = () => {
+    stageCheckout();
+  };
 
   return (
     <>
@@ -60,7 +68,9 @@ const Cart = () => {
                   <span>Valor total</span>
                   <span>R$ {valorTotal}</span>
                 </TotalValue>
-                <ContinueButton>Continuar com a entrega</ContinueButton>
+                <ContinueButton onClick={goToCheckout}>
+                  Continuar com a entrega
+                </ContinueButton>
               </>
             )}
           </CartFooter>
