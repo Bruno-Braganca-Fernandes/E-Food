@@ -37,7 +37,7 @@ const DeliveryForm = ({ onBack }: Props) => {
           value={formik.values.delivery.receiver}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          className={checkInputHasError("receiver") ? "error" : ""}
+          className={checkInputHasError("delivery.receiver") ? "error" : ""}
         />
         <ErrorMessage name="delivery.receiver" component={ErrorText} />
       </FormGroup>
@@ -50,7 +50,9 @@ const DeliveryForm = ({ onBack }: Props) => {
           value={formik.values.delivery.address.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          className={checkInputHasError("description") ? "error" : ""}
+          className={
+            checkInputHasError("delivery.address.description") ? "error" : ""
+          }
         />
         <ErrorMessage
           name="delivery.address.description"
@@ -66,7 +68,7 @@ const DeliveryForm = ({ onBack }: Props) => {
           value={formik.values.delivery.address.city}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          className={checkInputHasError("city") ? "error" : ""}
+          className={checkInputHasError("delivery.address.city") ? "error" : ""}
         />
         <ErrorMessage name="delivery.address.city" component={ErrorText} />
       </FormGroup>
@@ -81,7 +83,9 @@ const DeliveryForm = ({ onBack }: Props) => {
             value={formik.values.delivery.address.zipCode}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className={checkInputHasError("zipCode") ? "error" : ""}
+            className={
+              checkInputHasError("delivery.address.zipCode") ? "error" : ""
+            }
           />
           <ErrorMessage name="delivery.address.zipCode" component={ErrorText} />
         </FormGroup>
@@ -95,7 +99,9 @@ const DeliveryForm = ({ onBack }: Props) => {
             value={formik.values.delivery.address.number as any}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            className={checkInputHasError("number") ? "error" : ""}
+            className={
+              checkInputHasError("delivery.address.number") ? "error" : ""
+            }
           />
           <ErrorMessage name="delivery.address.number" component={ErrorText} />
         </FormGroup>

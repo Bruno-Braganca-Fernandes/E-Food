@@ -9,7 +9,9 @@ import PaymentForm from "./components/PaymentForm";
 import Confirmation from "./components/Confirmation";
 import { RootState } from "../../store";
 
-const initialValues: Omit<CheckoutPayload, "products"> = {
+const currentYearTwoDigits = new Date().getFullYear() % 100;
+
+const initialValues = {
   delivery: {
     receiver: "",
     address: {
@@ -24,10 +26,10 @@ const initialValues: Omit<CheckoutPayload, "products"> = {
     card: {
       name: "",
       number: "",
-      code: 0,
+      code: "",
       expires: {
-        month: 0,
-        year: 0,
+        month: "",
+        year: "",
       },
     },
   },
@@ -48,15 +50,31 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
     delivery: Yup.object().when((_, schema) =>
       step === "delivery"
         ? schema.shape({
-            receiver: Yup.string().required(
-              "O campo 'quem irá receber' é obrigatório"
-            ),
+            receiver: Yup.string()
+              .trim()
+              .min(3, "O nome deve ter no mínimo 3 letras")
+              .matches(
+                /^[a-zA-ZÀ-ú\s]+$/,
+                "O campo não deve conter números ou caracteres especiais"
+              )
+              .required("O campo 'quem irá receber' é obrigatório"),
             address: Yup.object().shape({
-              description: Yup.string().required(
-                "O campo 'endereço' é obrigatório"
-              ),
-              city: Yup.string().required("O campo 'cidade' é obrigatório"),
-              zipCode: Yup.string().required("O campo 'CEP' é obrigatório"),
+              description: Yup.string()
+                .trim()
+                .min(10, "O endereço deve ter no mínimo 10 caracteres")
+                .required("O campo 'endereço' é obrigatório"),
+              city: Yup.string()
+                .trim()
+                .min(3, "A cidade deve ter no mínimo 3 letras")
+                .matches(
+                  /^[a-zA-ZÀ-ú\s]+$/,
+                  "O campo não deve conter números ou caracteres especiais"
+                )
+                .required("O campo 'cidade' é obrigatório"),
+              zipCode: Yup.string()
+                .transform((value) => value.replace(/_/g, ""))
+                .length(9, "O CEP está incompleto")
+                .required("O campo 'CEP' é obrigatório"),
               number: Yup.string().required("O campo 'número' é obrigatório"),
             }),
           })
@@ -66,12 +84,50 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
       step === "payment"
         ? schema.shape({
             card: Yup.object().shape({
-              name: Yup.string().required("O nome é obrigatório"),
+              name: Yup.string()
+                .trim()
+                .min(3, "O nome deve ter no mínimo 3 letras")
+                .matches(
+                  /^[a-zA-ZÀ-ú\s]+$/,
+                  "O campo não deve conter números ou caracteres especiais"
+                )
+                .required("O nome é obrigatório"),
               number: Yup.string().required("O número é obrigatório"),
-              code: Yup.string().required("O CVV é obrigatório"),
+              code: Yup.string()
+                .transform((value) => value.replace(/_/g, ""))
+                .length(3, "O CVV deve ter 3 dígitos")
+                .required("O CVV é obrigatório"),
               expires: Yup.object().shape({
-                month: Yup.string().required("O mês é obrigatório"),
-                year: Yup.string().required("O ano é obrigatório"),
+                month: Yup.number()
+                  .transform((value, originalValue) => {
+                    if (
+                      typeof originalValue === "string" &&
+                      (originalValue.trim() === "" ||
+                        originalValue.includes("_"))
+                    ) {
+                      return undefined;
+                    }
+                    return value;
+                  })
+                  .min(1, "Mês inválido")
+                  .max(12, "Mês inválido")
+                  .required("O mês é obrigatório"),
+                year: Yup.number()
+                  .transform((value, originalValue) => {
+                    if (
+                      typeof originalValue === "string" &&
+                      (originalValue.trim() === "" ||
+                        originalValue.includes("_"))
+                    ) {
+                      return undefined;
+                    }
+                    return value;
+                  })
+                  .min(
+                    currentYearTwoDigits,
+                    `O ano não pode ser anterior a ${new Date().getFullYear()}`
+                  )
+                  .required("O ano é obrigatório"),
               }),
             }),
           })
@@ -93,12 +149,24 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
               price: item.preco,
             })),
             delivery: values.delivery,
-            payment: values.payment,
+            payment: {
+              card: {
+                name: values.payment.card.name,
+                number: values.payment.card.number,
+                code: Number(values.payment.card.code),
+                expires: {
+                  month: Number(values.payment.card.expires.month),
+                  year: Number(values.payment.card.expires.year),
+                },
+              },
+            },
           };
           console.log("Enviando para a API:", payload);
           setStep("confirmation");
         }
       }}
+      validateOnChange={false}
+      validateOnBlur={false}
     >
       {() => (
         <Form>
