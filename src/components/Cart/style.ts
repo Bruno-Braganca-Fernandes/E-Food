@@ -90,7 +90,7 @@ export const TotalValue = styled.div`
 
 export const ContinueButton = styled.button`
   width: 100%;
-  padding: 4px;
+  padding: 8px;
   background-color: ${colors.softPink};
   color: ${colors.accentPink};
   border: none;

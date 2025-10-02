@@ -9,9 +9,9 @@ import { Grid } from "./style";
 import { Container } from "../../styles";
 import { RootState } from "../../store";
 import { toggleCart } from "../../store/reducers/cart";
-import { SidebarContainer } from "../Ckeckout/styles";
-import { Overlay, CartContainer } from "../../components/Cart/style";
-import Checkout from "../Ckeckout";
+import { SidebarContainer } from "../Checkout/styles";
+import { Overlay } from "../../components/Cart/style";
+import Checkout from "../Checkout";
 import Cart from "../../components/Cart";
 
 const RestaurantPage = () => {

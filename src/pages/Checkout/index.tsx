@@ -1,10 +1,37 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import type { CheckoutPayload } from "../../types";
 import DeliveryForm from "./components/DeliveryForm";
 import PaymentForm from "./components/PaymentForm";
 import Confirmation from "./components/Confirmation";
+import { RootState } from "../../store";
+
+const initialValues: Omit<CheckoutPayload, "products"> = {
+  delivery: {
+    receiver: "",
+    address: {
+      description: "",
+      city: "",
+      zipCode: "",
+      number: 0,
+      complement: "",
+    },
+  },
+  payment: {
+    card: {
+      name: "",
+      number: "",
+      code: 0,
+      expires: {
+        month: 0,
+        year: 0,
+      },
+    },
+  },
+};
 
 type Props = {
   backToCart: () => void;
@@ -15,6 +42,7 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
   const [step, setStep] = useState<"delivery" | "payment" | "confirmation">(
     "delivery"
   );
+  const { items } = useSelector((state: RootState) => state.cart);
 
   const validationSchema = Yup.object().shape({
     delivery: Yup.object().when((_, schema) =>
@@ -38,7 +66,13 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
       step === "payment"
         ? schema.shape({
             card: Yup.object().shape({
-              name: Yup.string().required("Obrigatório"),
+              name: Yup.string().required("O nome é obrigatório"),
+              number: Yup.string().required("O número é obrigatório"),
+              code: Yup.string().required("O CVV é obrigatório"),
+              expires: Yup.object().shape({
+                month: Yup.string().required("O mês é obrigatório"),
+                year: Yup.string().required("O ano é obrigatório"),
+              }),
             }),
           })
         : schema
@@ -47,34 +81,28 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
 
   return (
     <Formik
-      initialValues={{
-        delivery: {
-          receiver: "",
-          address: {
-            description: "",
-            city: "",
-            zipCode: "",
-            number: "",
-            complement: "",
-          },
-        },
-        payment: { card: { name: "" } },
-      }}
+      initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log("Dados a serem enviados para a API:", values);
-
-        setStep("confirmation");
+        if (step === "delivery") {
+          setStep("payment");
+        } else {
+          const payload: CheckoutPayload = {
+            products: items.map((item) => ({
+              id: item.id,
+              price: item.preco,
+            })),
+            delivery: values.delivery,
+            payment: values.payment,
+          };
+          console.log("Enviando para a API:", payload);
+          setStep("confirmation");
+        }
       }}
     >
       {() => (
         <Form>
-          {step === "delivery" && (
-            <DeliveryForm
-              onNext={() => setStep("payment")}
-              onBack={backToCart}
-            />
-          )}
+          {step === "delivery" && <DeliveryForm onBack={backToCart} />}
           {step === "payment" && (
             <PaymentForm onBack={() => setStep("delivery")} />
           )}

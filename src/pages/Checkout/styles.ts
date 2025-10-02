@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import InputMask from "@mona-health/react-input-mask";
+
 import { colors } from '../../styles';
 
 export const SidebarContainer = styled.div<{ isOpen: boolean }>`
@@ -45,6 +47,19 @@ export const Input = styled.input`
     border-color: red;
   }
 `;
+
+export const MaskedInput = styled(InputMask)`
+ background-color: ${colors.softPink};
+  border: 2px solid ${colors.softPink};
+  height: 32px;
+  padding: 0 8px;
+  font-size: 14px;
+  width: 100%;
+
+  &.error {
+    border-color: red;
+  }
+`
 
 export const Button = styled.button`
   width: 100%;
