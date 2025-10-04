@@ -11,6 +11,7 @@ import type { CheckoutPayload } from "../../../types";
 
 type Props = {
   onBack: () => void;
+  disabled?: boolean;
 };
 
 const DeliveryForm = ({ onBack }: Props) => {

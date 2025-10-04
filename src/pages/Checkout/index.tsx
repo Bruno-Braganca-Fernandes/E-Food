@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import { clearCart } from "../../store/reducers/cart";
+import { useCheckoutMutation } from "../../services/api";
 import type { CheckoutPayload } from "../../types";
 import DeliveryForm from "./components/DeliveryForm";
 import PaymentForm from "./components/PaymentForm";
@@ -45,6 +47,11 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
     "delivery"
   );
   const { items } = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
+
+  const [purchase, { isLoading }] = useCheckoutMutation();
+
+  const [orderId, setOrderId] = useState("");
 
   const validationSchema = Yup.object().shape({
     delivery: Yup.object().when((_, schema) =>
@@ -139,30 +146,40 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
+      onSubmit={async (values) => {
         if (step === "delivery") {
           setStep("payment");
         } else {
-          const payload: CheckoutPayload = {
-            products: items.map((item) => ({
-              id: item.id,
-              price: item.preco,
-            })),
-            delivery: values.delivery,
-            payment: {
-              card: {
-                name: values.payment.card.name,
-                number: values.payment.card.number,
-                code: Number(values.payment.card.code),
-                expires: {
-                  month: Number(values.payment.card.expires.month),
-                  year: Number(values.payment.card.expires.year),
+          try {
+            const payload: CheckoutPayload = {
+              products: items.map((item) => ({
+                id: item.id,
+                price: item.preco,
+              })),
+              delivery: values.delivery,
+              payment: {
+                card: {
+                  name: values.payment.card.name,
+                  number: values.payment.card.number,
+                  code: Number(values.payment.card.code),
+                  expires: {
+                    month: Number(values.payment.card.expires.month),
+                    year: Number(values.payment.card.expires.year),
+                  },
                 },
               },
-            },
-          };
-          console.log("Enviando para a API:", payload);
-          setStep("confirmation");
+            };
+            const response = await purchase(payload);
+
+            if (response.data) {
+              setOrderId(response.data.orderId);
+              dispatch(clearCart());
+              setStep("confirmation");
+            }
+          } catch (error) {
+            console.error("Erro ao finalizar a compra:", error);
+            alert("Ocorreu um erro ao finalizar a compra. Tente novamente.");
+          }
         }
       }}
       validateOnChange={false}
@@ -170,11 +187,18 @@ const Checkout = ({ backToCart, finishOrder }: Props) => {
     >
       {() => (
         <Form>
-          {step === "delivery" && <DeliveryForm onBack={backToCart} />}
-          {step === "payment" && (
-            <PaymentForm onBack={() => setStep("delivery")} />
+          {step === "delivery" && (
+            <DeliveryForm onBack={backToCart} disabled={isLoading} />
           )}
-          {step === "confirmation" && <Confirmation onFinish={finishOrder} />}
+          {step === "payment" && (
+            <PaymentForm
+              onBack={() => setStep("delivery")}
+              disabled={isLoading}
+            />
+          )}
+          {step === "confirmation" && (
+            <Confirmation orderId={orderId} onFinish={finishOrder} />
+          )}
         </Form>
       )}
     </Formik>
